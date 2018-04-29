@@ -12,5 +12,5 @@ httpsServer.listen(4443);
 app.get('test.html', function (req, res) {
  // run some server-side code
     console.log('test.html requested');
-    res.send(__dirname + 'test.html' );
+    res.sendFile(__dirname + 'test.html' );
 });
