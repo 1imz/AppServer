@@ -1,8 +1,7 @@
 var xhr; // define the global variable to process the AJAX request
 function callDivChange() {
 xhr = new XMLHttpRequest();
-var filename = document.getElementById("filename").value;
-xhr.open("GET", filename, true);
+xhr.open("GET", "test2.html", true);
 xhr.onreadystatechange = processDivChange;
 try {
  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
