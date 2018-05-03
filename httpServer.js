@@ -2,6 +2,7 @@
 var express = require('express');
 var path = require("path");
 var app = express();
+ var fs = require('fs');
 
 	// adding functionality to allow cross-domain queries when PhoneGap is running a server
 	app.use(function(req, res, next) {
