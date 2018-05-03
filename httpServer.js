@@ -111,7 +111,8 @@ app.get('/getGeoJSON/:tablename/:geomcolumn', function (req,res) {
         	// now use the inbuilt geoJSON functionality
         	// and create the required geoJSON format using a query adapted from here:  
         	// http://www.postgresonline.com/journal/archives/267-Creating-GeoJSON-Feature-Collections-with-JSON-and-PostGIS-functions.html, accessed 4th January 2018
-        	// note that query needs to be a single string with no line breaks so built it up bit by bit
+        	
+            // note that query needs to be a single string with no line breaks so built it up bit by bit
 
         	var querystring = " SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features  FROM ";
         	querystring = querystring + "(SELECT 'Feature' As type     , ST_AsGeoJSON(lg." + req.params.geomcolumn+")::json As geometry, ";
