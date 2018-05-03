@@ -2,7 +2,7 @@
 var express = require('express');
 var path = require("path");
 var app = express();
- var fs = require('fs');
+var fs = require('fs');
 
 	// adding functionality to allow cross-domain queries when PhoneGap is running a server
 	app.use(function(req, res, next) {
@@ -55,7 +55,7 @@ app.get('/postgistest', function (req,res) {
 				   console.log("not able to get connection "+ err);
 				   res.status(400).send(err);
 			   } 
-				client.query('SELECT name FROM united_kingdom_counties' ,function(err,result) {
+				client.query('SELECT name FROM uk_counties_subset' ,function(err,result) {
 				console.log("query");
 				   done(); 
 				   if(err){
