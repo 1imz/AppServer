@@ -35,6 +35,19 @@ var app = express();
 	var pool = new pg.Pool(config);
 	console.log(config);
 
+
+
+	// add an http server to serve files to the Edge browser 
+	// due to certificate issues it rejects the https files if they are not
+	// directly called in a typed URL
+	var http = require('http');
+	var httpServer = http.createServer(app); 
+	httpServer.listen(4480);
+
+	app.get('/',function (req,res) {
+		res.send("hello world from the HTTP server");
+	});
+
 app.get('/postgistest', function (req,res) {
 		console.log('postgistest');
 		pool.connect(function(err,client,done) {
@@ -52,17 +65,6 @@ app.get('/postgistest', function (req,res) {
 				   res.status(200).send(result.rows);
 			   });
 			});
-	});
-
-	// add an http server to serve files to the Edge browser 
-	// due to certificate issues it rejects the https files if they are not
-	// directly called in a typed URL
-	var http = require('http');
-	var httpServer = http.createServer(app); 
-	httpServer.listen(4480);
-
-	app.get('/',function (req,res) {
-		res.send("hello world from the HTTP server");
 	});
 
 
