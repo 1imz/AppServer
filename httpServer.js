@@ -71,58 +71,35 @@ app.get('/getPOI', function (req,res) {
 	});
 });
 
-app.get('/getGeoJSON/:tablename/:geomcolumn', function (req,res) {
+//Get questions from database table
+app.get('/getquestions', function (req,res) {
      pool.connect(function(err,client,done) {
       	if(err){
           	console.log("not able to get connection "+ err);
            	res.status(400).send(err);
-       	} 
-
-       	var colnames = "";
-
-       	// first get a list of the columns that are in the table 
-       	// use string_agg to generate a comma separated list that can then be pasted into the next query
-       	var querystring = "select string_agg(colname,',') from ( select column_name as colname ";
-       	querystring = querystring + " FROM information_schema.columns as colname ";
-       	querystring = querystring + " where table_name   = '"+ req.params.tablename +"'";
-       	querystring = querystring + " and column_name <>'"+req.params.geomcolumn+"') as cols ";
-
-        	console.log(querystring);
-        	
-        	// now run the query
-        	client.query(querystring,function(err,result){
-          //call `done()` to release the client back to the pool
-          	done(); 
-	          if(err){
-               	console.log(err);
-               		res.status(400).send(err);
-          	}
-           	colnames = result.rows;
-       	});
-        	console.log("colnames are " + colnames);
-
+       	}
         	// now use the inbuilt geoJSON functionality
         	// and create the required geoJSON format using a query adapted from here:  
         	// http://www.postgresonline.com/journal/archives/267-Creating-GeoJSON-Feature-Collections-with-JSON-and-PostGIS-functions.html, accessed 4th January 2018
         	// note that query needs to be a single string with no line breaks so built it up bit by bit
 
         	var querystring = " SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features  FROM ";
-        	querystring = querystring + "(SELECT 'Feature' As type     , ST_AsGeoJSON(lg." + req.params.geomcolumn+")::json As geometry, ";
-        	querystring = querystring + "row_to_json((SELECT l FROM (SELECT "+colnames + ") As l      )) As properties";
-        	querystring = querystring + "   FROM "+req.params.tablename+"  As lg limit 100  ) As f ";
+        	querystring = querystring + "(SELECT 'Feature' As type     , ST_AsGeoJSON(lg.geom)::json As geometry, ";
+        	querystring = querystring + "row_to_json((SELECT l FROM (SELECT locationName, question, answer1,answer2,answer3,answer4,correct_answer) As l      )) As properties";
+        	querystring = querystring + "   FROM questionform  As lg limit 100  ) As f ";
         	console.log(querystring);
 
         	// run the second query
         	client.query(querystring,function(err,result){
 	          //call `done()` to release the client back to the pool
           	done(); 
-           	if(err){	
-                          	console.log(err);
-               		res.status(400).send(err);
-          	 }
+           	if(err){
+				console.log(err);
+				res.status(400).send(err);
+          	}
            	res.status(200).send(result.rows);
-       	});
-    });
+			});
+	});
 });
 
 
@@ -159,9 +136,9 @@ app.post('/uploadData',function(req,res){
 		// well known text should look like: 'POINT(-71.064544 42.28787)'
 		var geometrystring = "st_geomfromtext('POINT(" + req.body.longitude + " " + req.body.latitude + ")'";
 		
-		var querystring = "INSERT into formdata (name,surname,module,question, answer1, answer2, answer3, answer4, geom) values ('";
-		querystring = querystring + req.body.name + "','" + req.body.surname + "','" + req.body.module + "','";
-		querystring = querystring + req.body.question + "','" + req.body.answer1 + "','" + req.body.answer2 + "','" + req.body.answer3 + "','" + req.body.answer4+"',"+geometrystring + "))";
+		var querystring = "INSERT into questionform (locationName,question, answer1, answer2, answer3, answer4, correct_answer,  geom) values ('";
+		querystring = querystring + req.body.locationName + "','" + req.body.question + "','" + req.body.answer1 + "','";
+		querystring = querystring + req.body.answer2 + "','" + req.body.answer3 + "','" + req.body.answer4 + "','" + req.body.correct_answer + "',"+geometrystring + "))";
 		console.log(querystring);
 		client.query( querystring,function(err,result) {
 		done();
@@ -173,6 +150,29 @@ app.post('/uploadData',function(req,res){
 		});
 	});
 });
+
+//
+app.post('/uploadAnswer', function(req,res){
+	console.dir(req.body);
+	pool.connect(function(err,client,done) {
+		if(err){
+			console.log("not able to get connection "+ err);
+			res.status(400).send(err);
+		}
+		var querystring = "INSERT into question_answers (question,answer,correct_answer) values ('";
+		querystring = querystring + req.body.question + "','" + req.body.answer + "','" + req.body.correct_answer+ "')";
+		console.log(querystring);
+		client.query(querystring,function(err,result) {
+			done();
+			if(err) {
+				console.log(err);
+				res.status(400).send(err);
+			}
+			res.status(200).send("Answer submitted successfully");
+		});
+	});
+});
+
 
 
 // the / indicates the path that you type into the server - in this case, what happens when you type in:  http://developer.cege.ucl.ac.uk:32560/xxxxx/xxxxx
