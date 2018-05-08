@@ -136,7 +136,7 @@ app.post('/uploadData',function(req,res){
 		// well known text should look like: 'POINT(-71.064544 42.28787)'
 		var geometrystring = "st_geomfromtext('POINT(" + req.body.longitude + " " + req.body.latitude + ")'";
 		
-		var querystring = "INSERT into questionform (locationName,question, answer1, answer2, answer3, answer4, correct_answer,  geom) values ('";
+		var querystring = "INSERT into questionform (locationname,question, answer1, answer2, answer3, answer4, correct_answer,  geom) values ('";
 		querystring = querystring + req.body.locationName + "','" + req.body.question + "','" + req.body.answer1 + "','";
 		querystring = querystring + req.body.answer2 + "','" + req.body.answer3 + "','" + req.body.answer4 + "','" + req.body.correct_answer + "',"+geometrystring + "))";
 		console.log(querystring);
