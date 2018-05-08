@@ -85,7 +85,7 @@ app.get('/getquestionData', function (req,res) {
 
         	var querystring = " SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features  FROM ";
         	querystring = querystring + "(SELECT 'Feature' As type     , ST_AsGeoJSON(lg.geom)::json As geometry, ";
-        	querystring = querystring + "row_to_json((SELECT l FROM (SELECT locationName, question, answer1,answer2,answer3,answer4,correct_answer) As l      )) As properties";
+        	querystring = querystring + "row_to_json((SELECT l FROM (SELECT locationname, question, answer1,answer2,answer3,answer4,correct_answer) As l      )) As properties";
         	querystring = querystring + "   FROM questionform  As lg limit 100  ) As f ";
         	console.log(querystring);
 
