@@ -72,7 +72,7 @@ app.get('/getPOI', function (req,res) {
 });
 
 //Get questions from database table
-app.get('/getquestions', function (req,res) {
+app.get('/getquestionData', function (req,res) {
      pool.connect(function(err,client,done) {
       	if(err){
           	console.log("not able to get connection "+ err);
@@ -152,7 +152,7 @@ app.post('/uploadData',function(req,res){
 });
 
 //
-app.post('/uploadAnswer', function(req,res){
+app.post('/AnswerUpload', function(req,res){
 	console.dir(req.body);
 	pool.connect(function(err,client,done) {
 		if(err){
