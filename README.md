@@ -53,7 +53,7 @@ This app was tested using the following browsers:
           </ul></p>
 
 <h2>Mobile Application: QuizApp </h2>
-<p style="font-family:calibri;font-size:150%;">The QuizApp is created specifically for use on an android mobile devices,  a given that a user can connect to the UCL VPN network. This app is the client-side component. </p>
+<p style="font-family:calibri;font-size:150%;">The QuizApp is created specifically for use on an android mobile devices,  and given that a user can connect to the UCL VPN network. This app is the client-side component of the project. </p>
 
 <h3> Installation Guide </h3>
 <p style="font-family:calibri; font-size:150%;">
