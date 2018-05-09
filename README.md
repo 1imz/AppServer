@@ -32,7 +32,7 @@ The following port numbers were used in the project and are assigned to each ser
           <li>HTTPS: 31064</li>
           <li>Phonegap: 31264</li>
                                                   
-<h2> Web Application: QuestionApp </h2>
+<h2> Web Application: QuestionsApp </h2>
 <p style="font-family:calibri;font-size:150%;"> The QuestionsApp part is for use in a web browser, accessible to the creators/administrators of the project. </p>
 
 <h3> Installation Guide </h3>
