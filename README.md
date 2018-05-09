@@ -74,6 +74,8 @@ This app was tested using the following browsers:
 And the following mobile operating system:
           Android Marshmallow 6.0.1</p>
 
+<li>Code adapted from: https://github.com/claireellul/cegeg077-week5server/blob/master/httpServer.js</li>
+
             
           
             
